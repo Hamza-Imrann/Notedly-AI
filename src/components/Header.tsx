@@ -30,7 +30,7 @@ export default function Header() {
           ) : (
             <>
               <Button asChild>
-                <Link href="/signup">SignUp</Link>
+                <Link href="/signup">Sign Up</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href="/login">Login</Link>
