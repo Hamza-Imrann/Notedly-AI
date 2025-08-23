@@ -6,21 +6,88 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from "sonner"
+import { loginAction, signupAction } from '@/actions/users'
 
 export default function AuthForm({ type }: { type: "login" | "signup" }) {
 
   const router = useRouter();
   const isLoginForm = type === "login";
-  const [isSubmitting, startSubmitting] = useTransition();
+  const [isSubmitting, startTransition] = useTransition();
 
-  const handleSubmit = async (formData: FormData) => {
-    const email = formData.get("email")?.toString()
-    const password = formData.get("password")?.toString()
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-    console.log({ email, password })
+  const handleSubmit = async () => {
+    startTransition(async () => {
+      let errorMessage;
+      let title;
+      let description;
+      
+      // Login
+      if (isLoginForm) {
+        errorMessage = (await loginAction(email, password)).errorMessage;
+        title = "Logged In";
+        description = "You have successfully logged in.";
+
+        if (!email && !password) {
+          toast.error("Email and Password are required.", {
+            description: "Please enter your email and password to continue.",
+          });
+          return;
+        }
+
+        console.log({ email })
+      } 
+      
+      else { // Signup
+        errorMessage = (await signupAction(name, email, password)).errorMessage;
+        title = "Signed Up";
+        description = "Check your email for verification.";
+
+        console.log({ email })
+
+        if (!email || !password || !name || !confirmPassword) {
+          toast.error("All fields are required.", {
+            description: "Please fill in all fields before submitting.",
+          });
+          return;
+        }
+
+        if (password.length < 8) {
+          toast.error("Password too short", {
+            description: "Password must be at least 8 characters long.",
+          });
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          toast.error("Passwords does not match.", {
+            description: "Please ensure both passwords match.",
+          });
+          return;
+        }
+
+        console.log({ email })
+      }
+
+      if (errorMessage) {
+        toast.error(errorMessage, {
+          description: "Please try again.",
+        });
+        return;
+      }
+
+      toast.success(title, {
+        description: description,
+      });
+
+      router.replace('/'); // Redirect to home page after successful login/signup
+    });
   }
 
   return (
@@ -42,9 +109,12 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
                     <Label htmlFor="name">Name</Label>
                     <Input
                       id="name"
+                      name="name"
                       type="text"
                       placeholder="John Doe"
                       required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       disabled={isSubmitting}
                     />
                   </div>
@@ -54,9 +124,12 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="user@example.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   disabled={isSubmitting}
                 />
               </div>
@@ -74,9 +147,12 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
                 </div>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder='************'
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   disabled={isSubmitting}
                 />
               </div>
@@ -86,9 +162,12 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
                     <Label htmlFor="confirm-password">Confirm Password</Label>
                     <Input
                       id="confirm-password"
+                      name="confirm-password"
                       type="password"
                       placeholder='************'
                       required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       disabled={isSubmitting}
                     />
                   </div>

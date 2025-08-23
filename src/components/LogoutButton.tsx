@@ -1,4 +1,5 @@
 "use client"
+import { logoutAction } from '@/actions/users'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
@@ -7,11 +8,12 @@ import { toast } from "sonner"
 export default function LogoutButton() {
   const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setLoading(true);
-    const error = null;
 
-    if (error) {
+    const { errorMessage } = await logoutAction();
+
+    if (errorMessage) {
       toast.error("Logout Failed", {
         description: "Please try again",
         action: {

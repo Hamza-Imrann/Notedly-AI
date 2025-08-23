@@ -3,9 +3,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/DarkModeToggle";
 import LogoutButton from "@/components/LogoutButton";
+import { getUser } from "@/supabase/server";
 
-export default function Header() {
-  const user = null;
+export default async function Header() {
+  const user = await getUser();
 
   return (
     <header
