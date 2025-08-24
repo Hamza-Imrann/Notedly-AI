@@ -86,7 +86,11 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
         description: description,
       });
 
-      router.replace('/'); // Redirect to home page after successful login/signup
+      if (!isLoginForm) {
+        router.replace('/login'); // Redirect to login page after successful signup
+        return;
+      }
+      router.replace('/'); // Redirect to home page after successful login
     });
   }
 

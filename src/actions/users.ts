@@ -1,6 +1,8 @@
 "use server"
 
 import { createClient } from "@/supabase/server";
+import prisma from "../../prisma/prisma";
+import bcrypt from "bcryptjs";
 
 const handleError = (error: unknown) => {
   if (error instanceof Error) {
@@ -76,7 +78,23 @@ export async function signupAction(name: string, email: string, password: string
       throw new Error("Error signing up.");
     }
 
+    const pepper = process.env.PASSWORD_PEPPER || "";
+    if (!pepper) {
+      throw new Error("Password pepper is not in environment variables.");
+    }
+    const peppered_password = password + pepper;
+    const hashedPassword = await bcrypt.hash(peppered_password, 10);
+
+
     // Add user to 'users' table
+    await prisma.user.create({
+      data: {
+        id: userId,
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
 
     return {
       errorMessage: null,
