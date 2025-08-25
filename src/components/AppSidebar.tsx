@@ -20,7 +20,7 @@ export async function AppSidebar() {
     // Fetch notes for the authenticated user
     await prisma.note.findMany({
       where: { authorId: user.id },
-      orderBy: { updatedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     })
       .then((fetchedNotes) => {
         notes = fetchedNotes

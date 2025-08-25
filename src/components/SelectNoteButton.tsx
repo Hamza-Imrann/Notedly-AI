@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SidebarMenuButton } from "./ui/sidebar";
 import Link from "next/link";
+import { formatDistanceToNow } from 'date-fns';
 
 export default function SelectNoteButton({ note }: { note: Note }) {
   const noteId = useSearchParams().get("noteId") || ""
@@ -50,13 +51,7 @@ export default function SelectNoteButton({ note }: { note: Note }) {
             {shouldUseGlobalText ? (selectedNoteTitle || "Untitled Note") : (note.title || "Untitled Note")}
           </p>
           <p className="text-xs text-muted-foreground">
-            {note.updatedAt.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-              hour: 'numeric',
-              minute: '2-digit',
-            })}
+            Updated {formatDistanceToNow(note.updatedAt, { addSuffix: true })}
           </p>
         </Link>
       </SidebarMenuButton>
