@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import React, { Fragment, useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { Textarea } from "./ui/textarea"
-import { ArrowUpIcon } from "lucide-react"
+import { ArrowUpIcon, BrainCircuit } from "lucide-react"
 import { askAIAction } from "@/actions/notes"
 import "@/styles/ai-response.css"
 
@@ -96,9 +96,23 @@ export default function AskAIButton({ user }: Props) {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline">Ask AI</Button>
+          <Button
+            variant="outline"
+            className="relative border border-sky-500 text-sky-500 
+              bg-gradient-to-r from-sky-500/10 to-indigo-500/10
+              hover:from-sky-500/20 hover:to-indigo-500/20
+              transition duration-200 px-5 py-2 rounded-md 
+              shadow-sm hover:shadow-md
+              after:absolute after:inset-0 after:rounded-md 
+              after:shadow-[0_0_12px_rgba(93,188,252,0.4)] 
+              after:opacity-0 hover:after:opacity-100 
+              after:transition-opacity after:duration-300"
+          >
+            <BrainCircuit className="w-4 h-4" />
+            Ask AI
+          </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] flex h-[85vh] max-w-4xl flex-col overflow-y-auto" ref={contentRef}>
+        <DialogContent className="sm:max-w-[625px] flex h-[85vh] max-w-4xl flex-col overflow-y-auto" ref={contentRef}>
           <DialogHeader>
             <DialogTitle>Ask AI About Your Notes.</DialogTitle>
             <DialogDescription>
@@ -125,13 +139,14 @@ export default function AskAIButton({ user }: Props) {
           </div>
 
           <div
-            className="mt-auto flex cursor-text flex-col rounded-lg border p-4"
+            className="mt-auto flex cursor-text rounded-lg border p-4"
             onClick={handleClickInput}
           >
             <Textarea
               ref={textAreaRef}
               placeholder="Ask me anything about your notes..."
-              className="resize-none rounded-none border-none bg-transparent p-0 shadow-none placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="flex-1 resize-none border-none bg-transparent text-sm shadow-none p-1.5 pl-2
+                placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 mr-2"
               style={{
                 minHeight: "0",
                 lineHeight: "normal",

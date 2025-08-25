@@ -20,6 +20,14 @@ Here's how to get started:
 
 No save button needed. Just type and go!
 
+🧠 **Ask AI**
+
+Use the "Ask AI" button to get help or insights based on your notes.
+
+- The AI knows what's in your notes.
+- You can ask it questions, get summaries, or brainstorm ideas.
+- It's like having a smart assistant for everything you’ve written.
+
 Happy writing ✍️ — Notedly-AI has your back!`
     }
   });
