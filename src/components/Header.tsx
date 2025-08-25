@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/DarkModeToggle";
 import LogoutButton from "@/components/LogoutButton";
 import { getUser } from "@/supabase/server";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export default async function Header() {
   const user = await getUser();
@@ -12,16 +13,20 @@ export default async function Header() {
     <header
       className="relative flex h-24 w-full items-center justify-between bg-popover px-3 sm:px-8 shadow-sm"
     >
-      <Link href="/">
-        <Image
-          alt="Notedly-AI Logo"
-          src="/icon.png"
-          height={60}
-          width={60}
-          className="rounded-full"
-          priority
-        />
-      </Link>
+      <div className="flex items-center gap-4">
+        <SidebarTrigger />
+
+        <Link href="/">
+          <Image
+            alt="Notedly-AI Logo"
+            src="/icon.png"
+            height={60}
+            width={60}
+            className="rounded-full"
+            priority
+          />
+        </Link>
+      </div>
 
       <div className="flex items-center gap-4">
         <ModeToggle />
