@@ -17,8 +17,6 @@ export async function GET(request: NextRequest) {
     }
   });
 
-  console.log("IDIDID", newestNoteId?.id)
-
   return NextResponse.json({
     newestNoteId: newestNoteId?.id
   })
