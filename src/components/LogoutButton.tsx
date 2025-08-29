@@ -1,7 +1,7 @@
 "use client"
 import { logoutAction } from '@/actions/users'
 import { Button } from '@/components/ui/button'
-import { Loader2 } from 'lucide-react'
+import { Loader2, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from "sonner"
 
@@ -30,11 +30,11 @@ export default function LogoutButton() {
 
   return (
     <Button
-      className='w-22'
+      className='w-10'
       onClick={handleLogout}
       disabled={loading}
     >
-      {loading ? <Loader2 className='animate-spin' /> : "Logout"}
+      {loading ? <Loader2 className='animate-spin' /> : <LogOut />}
     </Button>
   )
 }

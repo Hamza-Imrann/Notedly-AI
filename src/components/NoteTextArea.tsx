@@ -53,14 +53,14 @@ export default function NoteTextArea({ noteId, startingTitle, startingText }: Pr
         value={noteTitle}
         onChange={handleTitleChange}
         placeholder="Note Title"
-        className="mb-1 mt-4 w-full max-w-4xl border-0 bg-transparent p-5 font-bold outline-none focus:ring-0 placeholder:text-muted-foreground text-base"
+        className="mb-1 mt-4 w-full max-w-4xl border-2 bg-transparent p-5 font-bold outline-none focus:ring-0 placeholder:text-muted-foreground text-base"
       />
 
       <Textarea
         value={noteText}
         onChange={handleUpdateNote}
-        placeholder="Start writing your note..."
-        className="h-full w-full max-w-4xl flex-1 resize-none border-0 bg-transparent p-5 mb-4 outline-none focus:ring-0 placeholder:text-muted-foreground text-base"
+        placeholder="Start writing your note"
+        className="h-full w-full max-w-4xl flex-1 resize-none border-2 bg-transparent p-5 mb-4 xl:mb-8 outline-none focus:ring-0 placeholder:text-muted-foreground text-base"
       />
     </>
   )

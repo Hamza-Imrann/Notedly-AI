@@ -1,7 +1,7 @@
 "use client"
 import { Note } from "@/generated/prisma";
 import { SidebarGroupContent as SidebarGroupContentShadCN, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
-import { Delete, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "./ui/input";
 import { useEffect, useMemo, useState } from "react";
 import Fuse from "fuse.js";
@@ -33,7 +33,7 @@ export default function SidebarGroupContent({ notes }: { notes: Note[] }) {
         <SearchIcon className="absolute top-3 left-3 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
-          placeholder="Search notes..."
+          placeholder="Search notes"
           className="w-full pl-9"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
