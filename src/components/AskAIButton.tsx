@@ -60,8 +60,10 @@ export default function AskAIButton({ user }: Props) {
 
   const handleSubmit = () => {
     if (!questionText.trim()) return;
+
     const newQuestions = [...questions, questionText];
     setQuestions(newQuestions);
+    setQuestionText("");
     setTimeout(scrollToBottom, 100);
 
     startTransition(async () => {
@@ -144,7 +146,7 @@ export default function AskAIButton({ user }: Props) {
           >
             <Textarea
               ref={textAreaRef}
-              placeholder="Ask me anything about your notes..."
+              placeholder="Ask me anything about your notes"
               className="flex-1 resize-none border-none bg-transparent text-sm shadow-none p-1.5 pl-2
                 placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 mr-2"
               style={{
@@ -157,7 +159,7 @@ export default function AskAIButton({ user }: Props) {
               value={questionText}
               onChange={(e) => setQuestionText(e.target.value)}
             />
-            <Button className="ml-auto size-8 rounded-full">
+            <Button onClick={handleSubmit} className="ml-auto size-8 rounded-full">
               <ArrowUpIcon className="text-background" />
             </Button>
           </div>
