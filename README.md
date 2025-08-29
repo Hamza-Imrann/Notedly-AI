@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notedly AI
 
-## Getting Started
+> ✨ An open-source **AI-powered smart notes app** that helps you write, edit, and manage notes effortlessly — with the power of AI at your fingertips.
 
-First, run the development server:
+---
 
+## ✨ Features
+- 📝 Create, edit, and organize notes with ease
+- 🔐 Secure authentication with **Supabase Auth**
+- 💾 Cloud storage with **Supabase Database**
+- 🤖 **Ask AI**: Summarize notes, extract key points, plan tasks, or ask questions about your notes
+- 🎨 Clean, responsive UI with dark mode built with **Tailwind CSS** and **Shadcn UI**
+- 🚀 Beginner-friendly, open-source, and easy to contribute to
+- ☁️ Fully deployable on Vercel
+
+---
+
+## 🛠 Tech Stack
+
+| Technology       | Badge                                                                                     |
+|------------------|--------------------------------------------------------------------------------------------|
+| **Framework**     | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=nextdotjs&logoColor=white) |
+| **Language**      | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white) |
+| **Styling**       | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white) ![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-111827?style=flat&logo=vercel&logoColor=white) |
+| **Database & Auth** | ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white) |
+| **ORM**           | ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white) |
+| **AI Integration**| ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat&logo=openai&logoColor=white) |
+| **Deployment**    | ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white) |
+
+---
+
+## 🤝 Contributing
+Contributions are welcome! Here’s how you can help:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -m "Add feature"`)
+4. Push to your branch (`git push origin feature-name`)
+5. Open a Pull Request
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run **Notedly AI** locally:
+
+### 1. Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Hamza-Imrann/Notedly-AI.git
+cd Notedly-AI
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Set Up Environment Variables
+Rename the `env.example` to `.env.local` and update the values on the file or
+Create a `.env.local` file in the root directory and add the following:
+```env
+DATABASE_URL=
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
-## Learn More
+NEXT_PUBLIC_BASE_URL=
+PASSWORD_PEPPER=
 
-To learn more about Next.js, take a look at the following resources:
+OPENAI_API_KEY=
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Run Database Migrations
+```bash
+npx prisma migrate dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 5. Start the Development Server
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+Your app should now be running at **http://localhost:3000** 🎉
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🌍 Deployment
+
+You can deploy **Notedly AI** easily with [Vercel](https://vercel.com/) (recommended):
+
+1. Push your project to GitHub.
+2. Import the repo into Vercel.
+3. Add your environment variables in the Vercel dashboard.
+4. Deploy with one click.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🔗 Live Demo
+
+🚧 Coming soon...
+
+---
+
+<div align="center">Made with ❤️</div>
