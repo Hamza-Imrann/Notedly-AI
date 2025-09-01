@@ -2,13 +2,14 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { resetPasswordAction } from '@/actions/users'
+import { updatePasswordAction } from '@/actions/users'
 import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
+import { supabase } from '@/supabase/client'
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState('')
@@ -37,7 +38,9 @@ export default function ResetPasswordPage() {
         return;
       }
 
-      const errorMessage = (await resetPasswordAction(password)).errorMessage;
+      const { data, error: errorMessage } = await supabase.auth.updateUser({
+        password,
+      });
 
       if (errorMessage) {
         toast.error("Reset Password Failed", {
@@ -49,10 +52,18 @@ export default function ResetPasswordPage() {
         })
         return;
       } else {
+        const errorMessage = (await updatePasswordAction(password)).errorMessage;
+
+        if (errorMessage) {
+          toast.error("Error updating database", {
+            description: "But you can still log in with your new password.",
+          })
+        }
+
         toast.success("Password reset successful", {
           description: "You can now log in with your new password.",
         })
-        router.replace('/login')
+        router.replace('/')
       }
     })
   }

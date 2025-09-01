@@ -17,6 +17,15 @@ const handleError = (error: unknown) => {
   }
 };
 
+const hashPassword = async (password: string) => {
+  const pepper = process.env.PASSWORD_PEPPER || "";
+    if (!pepper) {
+      throw new Error("Password pepper is not in environment variables.");
+    }
+    const peppered_password = password + pepper;
+    return await bcrypt.hash(peppered_password, 10);
+};
+
 export async function loginAction(email: string, password: string) {
   try {
     const { auth } = await createClient();
@@ -78,13 +87,7 @@ export async function signupAction(name: string, email: string, password: string
       throw new Error("Error signing up.");
     }
 
-    const pepper = process.env.PASSWORD_PEPPER || "";
-    if (!pepper) {
-      throw new Error("Password pepper is not in environment variables.");
-    }
-    const peppered_password = password + pepper;
-    const hashedPassword = await bcrypt.hash(peppered_password, 10);
-
+    const hashedPassword = await hashPassword(password);
 
     // Add user to 'users' table
     await prisma.user.create({
@@ -125,22 +128,32 @@ export async function forgotPasswordAction(email: string) {
   }
 }
 
-export async function resetPasswordAction(newPassword: string) {
+export async function updatePasswordAction(newPassword: string) {
   try {
-    const { auth } = await createClient();
-    const { data, error } = await auth.updateUser({
-      password: newPassword,
-    });
+    const supabase = await createClient()
 
-    if (error) {
-      throw error;
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession()
+
+    if (sessionError || !session?.user?.id) {
+      throw new Error('No authenticated user found')
     }
+
+    const hashedPassword = await hashPassword(newPassword)
+    const userId = session.user.id
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    })
 
     return {
       errorMessage: null,
-      user: data.user,
-    };
+      user: updatedUser,
+    }
   } catch (error) {
-    return handleError(error);
+    return handleError(error)
   }
 }
