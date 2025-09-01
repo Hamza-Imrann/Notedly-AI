@@ -2,11 +2,13 @@
 import { logoutAction } from '@/actions/users'
 import { Button } from '@/components/ui/button'
 import { Loader2, LogOut } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from "sonner"
 
 export default function LogoutButton() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogout = async () => {
     setLoading(true);
@@ -22,6 +24,7 @@ export default function LogoutButton() {
         },
       })
     } else {
+      router.replace("/");
       toast("Logout successful.")
     }
     

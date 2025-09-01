@@ -15,7 +15,6 @@ export async function AppSidebar() {
   const user = await getUser()
   let notes: Note[] = []
 
-  console.log("User in AppSidebar:", user?.user_metadata.email, user?.user_metadata.name)
   if (user) {
     // Fetch notes for the authenticated user
     await prisma.note.findMany({
