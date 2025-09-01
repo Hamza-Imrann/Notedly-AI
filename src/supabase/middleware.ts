@@ -2,91 +2,37 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
+  const response = NextResponse.next()
 
   const supabase = createServerClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
+        getAll: () => request.cookies.getAll(),
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options)
           })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
         },
       },
     }
   )
 
-  const isAuthRoute = request.nextUrl.pathname === "/login" || request.nextUrl.pathname === "/signup";
+  const isAuthRoute = ["/login", "/signup"].includes(request.nextUrl.pathname)
 
-  if (isAuthRoute) {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-    if (user) {
-      return NextResponse.redirect(new URL("/", process.env.NEXT_PUBLIC_BASE_URL));
-    }
+  // Redirect authenticated users away from login/signup
+  if (isAuthRoute && user) {
+    return NextResponse.redirect(new URL("/", process.env.NEXT_PUBLIC_BASE_URL))
   }
 
-  const { searchParams, pathname } = new URL(request.url)
-  if (!searchParams.get("noteId") && pathname === "/") {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  return response
+}
 
-    if (user) {
-      const { newestNoteId } = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch-newest-note?userId=${user?.id}`
-      )
-      .then((res) => res.json());
-      
-      if (newestNoteId) {
-        const url = request.nextUrl.clone();
-        url.searchParams.set("noteId", newestNoteId);
-        return NextResponse.redirect(url);
-      }
-      else {
-        const { noteId } = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/create-new-note?userId=${user?.id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            }
-          }
-        )
-        .then((res) => res.json());
-
-        const url = request.nextUrl.clone();
-        url.searchParams.set("noteId", noteId);
-        return NextResponse.redirect(url);
-      }
-    }
-  }
-
-  
-  // if (
-  //   !user &&
-  //   !request.nextUrl.pathname.startsWith('/login') &&
-  //   !request.nextUrl.pathname.startsWith('/auth') &&
-  //   !request.nextUrl.pathname.startsWith('/error')
-  // ) {
-  //   // no user, potentially respond by redirecting the user to the login page
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/login'
-  //   return NextResponse.redirect(url)
-  // }
-
-  return supabaseResponse
+export const config = {
+  matcher: ['/', '/login', '/signup'], // Only run on relevant routes
 }
